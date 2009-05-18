@@ -1,0 +1,177 @@
+
+
+			       Overview
+			       """"""""
+This program grab keys in X and start the corresponding shell command.
+
+			       Required
+			       """"""""
+
+    XFree86
+
+to compile from source:
+    
+    The X11 include files and libraries. (Not the X server development packages)
+
+			     Installation
+			     """"""""""""
+configure --help
+configure (and any options you want to set)
+make
+make install
+
+			      .xbindkeysrc
+			      """"""""""""
+[ OVERVIEW ]
+The configuration of specific clients is taken care of in the file called 
+"$HOME/.xbindkeysrc"
+
+You can have a default file with the --defaults option:
+
+	xbindkeys --defaults
+
+The pound(#) symbol may be used anywhere for comments. 
+
+[ COMMAND ]
+A command is formated like this:
+
+"Command to start &"
+  modifier+modifier+ key
+
+
+Where modifier are:
+
+	Control, Shift, Alt or Mod1, Mod2 (numlock), Mod3, Mod4, Mod5
+
+	(modifiers are not case sensitive).
+
+By defaults, xbindkeys does not pay attention with the modifiers
+NumLock, CapsLock and ScrollLock.
+Add the lines above in the config file, if you want to pay attention to them.
+
+	keystate_numlock = enable
+	keystate_capslock = enable
+	keystate_scrolllock= enable
+
+
+use 'xev' or 'xbindkeys --key' or 'xbindkeys --multikey' to know modifier 
+and keycode or keysym.
+
+Example:
+
+        # control+alt+mod2 + d (it's a comment)
+          "xterm &"
+          control+alt+mod2 + d
+
+        # control+alt+mod2 + f (it's a comment)
+           "rxvt &"
+           m:0x1c + c:41
+
+  Here, pushing control+alt+mod2 (numlock enabled) and d starts  an xterm.
+And pushing control+alt+mod2 and f starts rxvt.
+
+  Please, don't forget the '&' at the end of the command,
+if not xbindkeys will launch only one command at the same time
+
+
+
+In version 1.7.0 and later, you can use a scheme/guile style in configuration
+file (the default is ~/.xbindkeysrc.scm).
+Try xbindkeys --defaults-guile for more details.
+
+In version 1.8.0 and later, you have a full access to the xbindkeys internal  
+from guile scheme. This allow some more complicated configuration file and 
+prevent the need of a shell script (like double click, timed double click or
+keys combinations).
+See xbindkeysrc.scm or xbindkeysrc-combo.scm in the source directory for some
+examples.
+Note: The guile configuration file is the prefered way when there is a need for
+a non trivial configuration. (I think) there is no need to hack the xbindkeys
+source code. All can be done with the guile file.
+For more details, please see here:
+
+  http://www.gnu.org/software/guile/guile.html
+
+
+			       Options
+			       """""""
+Use the -h or --help option for all available options.
+
+-f
+--file
+                use an alternative xbindkeysrc (defaults is $HOME/.xbindkeysrc)
+
+-h
+--help
+                help for xbindkeys.
+
+-v
+--verbose
+                Verbose mode. Print more information when
+                the program is running.
+         
+-X <display>
+--display <display>
+                use XServer at a specified display in standard X form.
+                using this mode allows for multiple displays.
+
+-d
+--defaults
+                Show a default rc file. You can use it to create the file
+                $HOME/.xbindkeysrc like this:
+
+                      'xbindkeys --defaults > $HOME/.xbindkeysrc'
+
+-k
+--key
+                Identify key pressed. This option is usefull to fill
+                $HOME/.xbindkeysrc. You have just to press a key to
+                know what to put in the config file.
+
+-mk
+--multikey
+                Identify key pressed like with --key option, but you can 
+		press modifier and key, and you can make multi tries.
+		You have just to press a key to know what to put in the 
+		config file.
+
+-g
+--geometry
+                Set size and position of the window open with the 
+		--key / --multikey options.
+
+-n
+--nodaemon
+                Don't start as daemon. By default, xbindkeys starts in
+                background, this option prevents this feature.
+
+If guile support have not been disabled:
+
+-dg
+--defaults-guile
+                Print a default guile configuration file
+
+-fg
+--file-guile
+                Use an alternative guile configuration file
+
+
+
+				Usage
+				"""""
+xbindkeys &
+
+if you want, you can start it with X:
+
+    Edit your .xsession or .XClients or .xinitrc (if any) and 
+    add a line like this:
+
+         xbindkeys
+
+
+
+			     Contact Info
+			     """"""" """"
+			  Philippe Brochard
+			    <hocwp@free.fr>
+			 http://hocwp.free.fr
