@@ -1,0 +1,80 @@
+#!/bin/sh 
+# \
+exec wish "$0" "$@"
+
+
+#***************************************************************************
+#	     XBindKeys_Show : show the keybinding off xbindkeys
+#                           -------------------
+#    begin                : Sat Oct 13 14:11:34 CEST 2001
+#    copyright            : (C) 2001 by Philippe Brochard
+#    email                : hocwp@free.fr
+#***************************************************************************
+#
+#***************************************************************************
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU General Public License as published by  *
+#*   the Free Software Foundation; either version 2 of the License, or     *
+#*   (at your option) any later version.                                   *
+#*                                                                         *
+#***************************************************************************
+
+set arg0 [ lindex $argv 0 ]
+set arg1 [ lindex $argv 1 ]
+
+if { $arg0 == "--help" || $arg0 == "-h" } {
+	puts "Usage: xbindkeys_show \[Options\]"
+	puts "  Where options are:"
+	puts "         --help                 this help"
+	puts "     -f, --file <file>          use <file> as configuration file"
+	puts "    -fg, --file-guile <file>    use <file> as guile configuration file"
+	exit
+}
+
+
+set file_option ""
+
+if { $arg0 == "--file" || $arg0 == "-f" } {
+	set file_option "-f"
+}
+if { $arg0 == "--file-guile" || $arg0 == "-fg" } {
+	set file_option "-fg"
+}
+
+if { $arg1 != "" && $file_option != "" } {
+	set list [ exec "xbindkeys" "--show" "$file_option" "$arg1" ]
+    } else {
+	set list [ exec "xbindkeys" "--show" ]
+}
+
+
+
+frame .framelst -borderwidth .5c
+pack .framelst -side top -expand yes -fill y
+
+scrollbar .scroll -command ".liste yview" -orient vertical
+scrollbar .scrollx -command ".liste xview" -orient horizontal
+listbox .liste -yscroll ".scroll set" -xscroll ".scrollx set" \
+    -setgrid 1 -height 20 -width 50
+
+
+
+
+
+foreach p [ split $list "\n" ] {
+    .liste insert end "$p"
+}
+
+button .but0 -text "X key binding\n  for more details see \$HOME/.xbindkeysrc  " \
+    -command { exit }
+
+
+pack .scroll -in .framelst -side right -fill y
+pack .scrollx -in .framelst -side bottom -fill x
+pack .liste -in .framelst -side left -expand yes -fill both
+
+pack .but0 -side bottom
+
+
+bind all <KeyPress> { exit }

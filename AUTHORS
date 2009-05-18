@@ -1,0 +1,10 @@
+Philippe Brochard <hocwp@free.fr> http://hocwp.free.fr
+
+Marcello Mathias Herreshoff for the guile support.
+<marcello@hummer.stanford.edu>
+
+Patrick Leslie Polzer for the help on the Xinerama patch.
+<leslie.polzer@gmx.net>
+
+Edwin Stang for a bug fix in the event loop.
+<edwinstang@gmail.com>

@@ -1,0 +1,212 @@
+.TH XBindKeys 1 "Wed Apr 18 2007"
+.UC 1
+.SH "NAME"
+xbindkeys \- a grabbing keys program for X
+.SH "SYNOPSIS"
+\fBxbindkeys\fP [ \fIoptions\fP ]
+.br
+.SH "DESCRIPTION"
+\fIXbindKeys\fP is a program that grab keys and mouse button events 
+in X and starts associated shell command.
+
+.LP
+.SH "COMMAND LINE OPTIONS"
+Available command line options are as follows:
+.TP
+\fB-d, --defaults\fP
+Print a default rc file
+.TP
+\fB-f, --file\fP
+Use an alternative rc file
+.TP
+\fB-h, --help\fP
+Short help on options plus version/author info.
+.TP
+\fB-X, --display\fP
+Set X display to use
+.TP
+\fB-v, --verbose\fP
+More information on xbindkeys when it run
+
+.TP
+\fB-k, --key\fP
+Identify one key pressed (useful to fill the configuration file)
+
+.TP
+\fB-mk, --multikey\fP
+Identify multi key pressed (useful to fill the configuration file)
+
+.TP
+\fB-g, --geometry\fP
+size and position of window with -k|-mk option
+
+.TP
+\fB-n, --nodaemon\fP
+don't start as daemon
+
+.LP
+If guile support have not been disabled:
+.TP
+\fB-dg, --defaults-guile\fP
+Print a default guile configuration file
+
+.TP
+\fB-fg, --file-guile\fP
+Use an alternative guile configuration file
+
+.SH "XBINDKEYSRC"
+XBindKeys uses a configuration files. 
+This file is $HOME/.xbindkeysrc, used only for one user.
+All whitespace is ignored in the files except for within 
+the commands names double quotes.
+.LP
+The configuration file consists of commands names in double quotes,
+and associated keys in the next line.
+.LP
+Comments are started with a pound (#) and extend to the end of the line.
+.LP
+You can see a default file with the --defaults option or create a default
+$HOME/.xbindkeysrc with 
+.nf
+ 'xbindkeys --defaults > $HOME/.xbindkeysrc'.
+.LP
+.fi
+
+.SH "KEYSYMS"
+The program expects combinations of keysyms to be used by using plus(+) 
+characters to combine them together.
+.LP
+The format of a command line is:
+.nf
+    "command to start &"
+.nf
+       associated key
+.LP
+.fi
+To specify an associated key, you can use 'xbindkeys --key' or
+ 'xbindkeys --multikey' and put one of the two lines in the 
+configuration file.
+.LP
+A list of keys is in /usr/include/X11/keysym.h and in
+/usr/include/X11/keysymdef.h.
+The XK_ is not needed.
+.LP
+List of modifiers:
+.nf
+    Release, Control, Shift, Mod1 (Alt), Mod2 (NumLock),
+.nf
+    Mod3 (CapsLock), Mod4, Mod5 (Scroll).
+.LP
+.fi
+The release modifier is not a standard X modifier, but you can
+use it if you want to catch release events instead of press events.
+.LP
+By defaults, xbindkeys does not pay attention with the modifiers
+NumLock, CapsLock and ScrollLock.
+Add the lines above in the configuration file, if you want to pay 
+attention to them.
+.LP
+    keystate_numlock = enable
+.nf
+    keystate_capslock = enable
+.nf
+    keystate_scrolllock= enable
+
+.SH "EXAMPLES"
+.LP
+# control+shift+d starts an xterm (it's a comment)
+.nf
+"xterm" 
+.nf
+  control+shift + q
+.LP
+# Menu key starts xbindkeys_show
+.nf
+"xbindkeys_show"
+.nf
+  Menu
+.LP
+# Control + mouse button 1 starts an xterm
+.nf
+"xterm"
+.nf
+  Control + b:1
+.LP
+# Control+Shift+a  release event starts rxvt
+.nf
+"rxvt"
+.nf
+  release+control+shift + a
+.LP
+# Control + mouse button 2 release event starts rxvt
+.nf
+"rxvt"
+.nf
+  Control + b:2 + Release
+
+.SH "SCHEME CONFIGURATION STYLE"
+If the guile support have not been disabled, you can use an alternate
+configuration file written in scheme. xbindkeys read first the scheme
+configuration file, and if this file doesn't exist, it read the
+standard configuration file.
+.LP
+For more details, please see here
+.nf
+  http://www.gnu.org/software/guile/guile.html
+.LP
+\fBNote: The guile configuration file is the prefered way if you have a non trivial
+configuration like for example double click, timed click or keys combinations.\fP
+.LP
+The defaults is ~/.xbindkeysrc.scm
+.LP
+Use xbindkeys --defaults-guile for more details.
+.LP
+And xbindkeys --defaults-guile > ~/.xbindkeysrc.scm to use this method.
+
+.SH "NOTE"
+xbindkeys reload its configuration file each time it has changed.
+But if you want to force it reloading its configuration file, you can
+send a HUP signal:
+.LP
+killall -HUP xbindkeys
+.LP
+When HUP signal is send to xbindkeys, changes in $HOME/.xbindkeysrc 
+takes effect only after moving mouse.
+
+.SH "BUGS"
+If you find a bug, please send a mail to <hocwp@free.fr>
+.LP
+.SH "HOMEPAGE"
+.nf
+http://hocwp.free.fr/xbindkeys
+.fi
+
+.LP
+.SH "AUTHOR"
+Philippe Brochard <hocwp@free.fr>
+.nf
+Marcello Mathias Herreshoff for the guile support <marcello@hummer.stanford.edu>
+
+.LP
+.SH "FILES"
+.nf
+$HOME/.xbindkeysrc
+        The users configuration file.
+.LP
+$HOME/.xbindkeysrc.scm
+        The users configuration file in scheme style (if guile support have not been disabled).
+.fi
+
+.LP
+.SH "SEE ALSO"
+.nf
+
+\fBxbindkeys_show\fP
+    Utility for showing the actual keybinding with xbindkeys
+\fBxmodmap(1x)\fP
+    Utility for modifying keymap & button mappings in X.
+\fBxev(1x)\fP
+    Print contents of X events.
+\fB/usr/include/X11/keysymdef.h\fP
+    X11 KeySym definitions.
+

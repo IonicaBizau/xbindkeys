@@ -1,0 +1,6 @@
+make a documentation more easy to understand :)
+
+convert NEWS file to the standard NEWS file format
+convert ChangeLog file to the standard ChangeLog file format
+convert AUTHORS file to the standard AUTHORS file format
+create a nice printable readme for printing (LaTeX or DocBook?)

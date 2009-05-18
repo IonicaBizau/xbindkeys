@@ -1,0 +1,225 @@
+xbindkeys changelog by Philippe Brochard <hocwp@free.fr>
+
+
+version:
+
+1.8.3:
+	Add a listen loop in the main loop. This fix a bug where, in the
+	previous version, a keypress was needed to reload the
+	configuration file after a keybinding change. Now one can edit the
+	configuration file and keybindings are automatically updated after
+	each save. Many thanks to Edwin Stang!
+
+1.8.2:
+	Correction of typos in the man page. An emphasis is made on the
+	documentation about the guile configuration file (the prefered way
+	for non trivial configuration).
+	Many thanks to Brad Sawatzky.
+
+1.8.1:
+	Better Guile configuration with autotools.
+	Minor compilation warning have been fixed.
+
+1.8.0:
+	Enable a full access to the xbindkeys internal from the guile
+	scheme configuration file. A grabbed key can start a shell command
+	or run a scheme function. This enable to do more powerfull things
+	inside xbindkeys whitout the need of an external shell script
+	(like double click, timed double click or keys combinations).
+
+---------------------------------------------------------------------------
+
+1.7.4:
+	xbindkeys.spec: Change Copyright to License.
+	Little english correction in warnings.
+	Configuration files are reloaded on the fly when they have
+	changed so there is no more need to send a HUP signal to reload
+	them (Many thanks to Shish).
+	Use `scm_c_define_gsubr' instead of 'scm_make_gsubr' with the
+	guile mode.
+
+
+1.7.3:
+	Bugfix under Solaris, XBindKeys built with -DFORK_FLAG=1 fails to
+	wait for processes it spawns, leaving lots of defunct processes.
+	Thanks to Ciaran Anscomb for the patch.
+
+1.7.2:
+	Changes to grab keys in all display screens and not only in the
+	default root window (Xinerama suport).
+	Bugfix for the Guile support in configure.ac.
+
+1.7.1:
+	Verbose mode is not started as daemon.
+	Check rc file before starting as daemon (so warning about
+	configuration files are visible).
+
+1.7.0:
+	Add guile/scheme configurtion file style (Many thanks to Marcello
+	Mathias Herreshoff).
+
+---------------------------------------------------------------------------
+
+1.6.5:
+        Add a --disable-tk option to prevent xbindkeys_show install.
+	So no tcl/tk dependency is needed.
+	Add a NOTE in xbindkeys man page to say that xbindkeys can
+	reread its config file with a -HUP signal (killall -HUP xbindkeys).
+	Add two verbose test (forgotten in other version).
+
+1.6.4:
+	Add a --disable-fork option  in configure.ac to start one command
+	at a time (use system instead of fork+exec).
+	Remove umask (022) in daemonize function which cause troubles.
+
+1.6.3:
+	Change to switch to autoconf2.5X and automake >= 1.6
+	Remove chdir ("/tmp")  in daemonize function.
+
+1.6.2:
+	Remove AC_PROG_RANLIB and AC_PROG_MAKE_SET from configure.in
+	to prevent rebuit of Makefile when doing a make.
+
+1.6.1:
+	Minor buggfix : use strtol instead atoi for use with
+	hexadecimal number.
+	Complete daemonzie function
+
+1.6.0:
+	Add: Release event for keys and buttons.
+	Don't use threads any more (use fork+exec instead)
+	Better daemonize function
+	Simplification of configure.in (better test for X)
+	Don't use sscanf any more
+
+---------------------------------------------------------------------------
+
+1.5.5:
+	Change: better identification of modifiers with --key and
+	--mulitkey options.
+
+1.5.4:
+        Change: add warning when a key is unknown in .xbindkeysrc.
+
+1.5.3:
+	Bugfix: if the keycode is unknow then xbindkeys don't asign a
+	key with keycode=0.
+	Change: The default RC file don't use the Menu key witch cause
+	problems.
+
+1.5.2:
+	Change: if there's a conflict with keys then xbindkeys just
+	make a warning and continue with other keys.
+
+1.5.1:
+	Add: a new interface for xbindkeys_show (use scrollbar).
+
+1.5.0:
+	Add: xbindkeys have now the ability to catch Mouse Button Events.
+	so: "xterm"
+	      control + b:2
+	starts an xterm when mouse button 2 and control are pressed.
+
+---------------------------------------------------------------------------
+
+1.4.1:
+	Solve some minor problems when compiling with gcc 3.0.4 under GNU/Linux.
+
+1.4.0:
+	Change: rename all code to make it uniform.
+	Add: start as daemon by default, but can be changed with
+	  --nodaemon|-n option.
+	Add: xbindkeys starts commands in threads, so they are not blocking
+	  it if we forget the & at the end of the command (this can be
+	  disabled with ./configure --disable-pthread)
+
+---------------------------------------------------------------------------
+
+1.3.0:
+	Change: Now, by default, xbindkeys does not pay attention with NumLock
+	  CapsLock and ScrollLock modifiers.
+	Add: keystate_(numlock | capslock | scrolllock) options in the RC file :
+
+	keystate_numlock = enable      => Enable NumLock modifier
+	keystate_capslock = enable     => Enable CapsLock modifier
+	keystate_scrolllock= enable    => Enable ScollLock modifier
+
+---------------------------------------------------------------------------
+
+1.2.2:
+	Change: Reading the RC file is now made in a single pass (in
+  	  old versions that needs two pass). So, the code is mush clearer.
+
+1.2.1:
+	Add: xbindkeys can now reread its configuration file with
+	  the HUP signal. usage :  killall -HUP xbindkeys.
+	Change: Documentation a little bit more clearly.
+
+1.2.0:
+	Change: grab code like in 1.0.x version but same options.
+	Change: options --key/-multikey open a window to avoid problems
+	        with icewm (based on xev)
+	Add: --geometry|-g to set the size of the window with
+	     --key/--multikey
+	Add: advertises when xbindkeys can't grab key because its keycode
+	     is not in  min_keycode < keycode < max_keycode.
+	     => say to change maximum value in
+	            /usr/X11R6/lib/X11/xkb/keycodes/xfree86
+
+---------------------------------------------------------------------------
+
+1.1.2:
+	Add: --multikey|-mk option -> identify multi key in infinite loop
+
+1.1.1:
+	Change: --key|-k option to identify only one key.
+
+1.1.0:
+	Add: Grab keys with KeySym or with KeyCode like in xev.
+	     (in $HOME/.xbindkeysrc:  c:nnn set keycode to nnn
+	                              m:nnn set modifier to nnn)
+	Add: --key|-k option -> identify key pressed (useful to fill
+	     $HOME/.xbindkeysrc).
+
+---------------------------------------------------------------------------
+
+1.0.1:
+	Change in Makefile.am for Solaris compatibility.
+	thanks Peter.
+
+1.0.0:
+	Final version!
+
+---------------------------------------------------------------------------
+
+1.0.0b:
+	Beta Final version.
+
+---------------------------------------------------------------------------
+
+0.2.1:
+	Read RC file.
+
+0.2.0:
+	Read command line options.
+
+---------------------------------------------------------------------------
+
+0.1.0:
+	Make struct of xbindkeys : key, modifier, command.
+
+
+---------------------------------------------------------------------------
+
+
+0.0.4:
+	Minimal version is working.
+
+0.0.3:
+	"Clean" compilation methode (automake/autoconf).
+
+0.0.2:
+	remote all comment in minimal version of imwheel -> xbindkeys.
+
+0.0.1:
+	comment imwheel code to only grab keys.
