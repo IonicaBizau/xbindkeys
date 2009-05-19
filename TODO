@@ -1,3 +1,15 @@
+Urgent:
+
+  - Fix a bug when there is more than one button in a key
+    combinaison.
+    ref: http://lists.nongnu.org/archive/html/xbindkeys-devel/2009-05/msg00001.html
+
+Maybe:
+
+  - Replace the XNextEvent with a XPeekEvent/XNextEvent in the main
+    loop to let the event pass to the underlying X application on some
+    criteria.
+
 make a documentation more easy to understand :)
 
 convert NEWS file to the standard NEWS file format
