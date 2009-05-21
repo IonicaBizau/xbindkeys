@@ -3,6 +3,10 @@ Urgent:
   - Fix a bug when there is more than one button in a key
     combinaison.
     ref: http://lists.nongnu.org/archive/html/xbindkeys-devel/2009-05/msg00001.html
+    Update: Only one button is bound at a time (the last defined in
+    the rc configuration file). And only one button is grabbed even
+    when there is more than one button in the configuration file.
+    => need more info.
 
 Maybe:
 
