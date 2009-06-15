@@ -163,7 +163,7 @@ get_options (int argc, char **argv)
     {
       home = getenv ("HOME");
 
-      if (rc_file)
+      if (rc_file != NULL)
 	{
 	  strncpy (rc_file, home, sizeof (rc_file) - 20);
 	  strncat (rc_file, "/.xbindkeysrc", sizeof (rc_file));
@@ -175,7 +175,7 @@ get_options (int argc, char **argv)
     {
       home = getenv ("HOME");
 
-      if (rc_guile_file)
+      if (rc_guile_file != NULL)
 	{
 	  strncpy (rc_guile_file, home, sizeof (rc_guile_file) - 20);
 	  strncat (rc_guile_file, "/.xbindkeysrc.scm", sizeof (rc_guile_file));
@@ -486,7 +486,7 @@ show_defaults_guile_rc (void)
   printf ("(define-chord-keys '(alt \"b:1\") '(alt \"b:3\")\n");
   printf ("  \"gv\" \"xpdf\" \"xterm\" \"xterm\")\n");
   printf ("\n");
-  printf ("\n");  
+  printf ("\n");
   printf (";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
   printf (";; End of xbindkeys guile configuration ;;\n");
   printf (";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
@@ -774,7 +774,7 @@ get_rc_file (void)
 			}
 		    }
 
-		  if (add_key (type, event_type, keysym, keycode, 
+		  if (add_key (type, event_type, keysym, keycode,
 			       button, modifier, command, 0) != 0)
 		    break;
 		}
@@ -865,7 +865,7 @@ SCM name (SCM val) \
     printf("Running mask cmd!\n"); \
   mask_name = SCM_FALSEP(val); \
   return SCM_UNSPECIFIED; \
-} 
+}
 
 MAKE_MASK_WRAPPER(set_numlock_wrapper, numlock_mask);
 MAKE_MASK_WRAPPER(set_scrolllock_wrapper, scrolllock_mask);
@@ -879,15 +879,15 @@ SCM extract_key (SCM key, KeyType_t *type, EventType_t *event_type,
 {
   char *str;
   int len;
-  
+
   while(SCM_CONSP(key)){ //Iterate through the list (If it is a list)
     if(!SCM_CONSP(SCM_CDR(key))){ //if this is the last item
       key = SCM_CAR(key);  //go to that
       break; //and continue
     }
     //Otherwise, this is a modifyer.
-   
-    //So copy it: 
+
+    //So copy it:
     //Guile strings are not \0 terminated. hence we must copy.
     len = SCM_LENGTH(SCM_CAR(key));
     str = malloc(sizeof(char)*(len+1));
@@ -930,7 +930,7 @@ SCM extract_key (SCM key, KeyType_t *type, EventType_t *event_type,
   }
   //So this was either the only or last item of the 1st arg
   //Hence it is the key
- 
+
   //So copy it:
   //Guile strings are not \0 terminated. hence we must copy.
   len = SCM_LENGTH(key);
@@ -990,7 +990,7 @@ SCM xbindkey_wrapper(SCM key, SCM cmd)
   unsigned int button = 0;
   unsigned int modifier = 0;
   char *cmdstr;
-  
+
   //Guile strings are not \0 terminated. hence we must copy.
   cmdstr = malloc(sizeof(char) * SCM_LENGTH(cmd) + 1);
   strncpy(cmdstr, SCM_CHARS(cmd), SCM_LENGTH(cmd));
@@ -1003,14 +1003,14 @@ SCM xbindkey_wrapper(SCM key, SCM cmd)
     {
       return SCM_BOOL_F;
     }
-  
-  if (add_key (type, event_type, keysym, keycode, 
+
+  if (add_key (type, event_type, keysym, keycode,
        	button, modifier, cmdstr, 0) != 0)
     {
       printf("add_key didn't return 0!!!\n");
       return SCM_BOOL_F;
     }
-  
+
   free(cmdstr); //we may get rid of them!
 
   return SCM_UNSPECIFIED;
@@ -1025,14 +1025,14 @@ SCM xbindkey_function_wrapper (SCM key, SCM fun)
   KeyCode keycode = 0;
   unsigned int button = 0;
   unsigned int modifier = 0;
-  
+
   if (extract_key (key, &type, &event_type, &keysym, &keycode,
 		   &button, &modifier) == SCM_BOOL_F)
     {
       return SCM_BOOL_F;
     }
 
-  if (add_key (type, event_type, keysym, keycode, 
+  if (add_key (type, event_type, keysym, keycode,
 	       button, modifier, NULL, fun) != 0)
     {
       printf("add_key didn't return 0!!!\n");
@@ -1052,7 +1052,7 @@ SCM remove_xbindkey_wrapper (SCM key)
   KeyCode keycode = 0;
   unsigned int button = 0;
   unsigned int modifier = 0;
-  
+
   if (extract_key (key, &type, &event_type, &keysym, &keycode,
 		   &button, &modifier) == SCM_BOOL_F)
     {
@@ -1064,8 +1064,8 @@ SCM remove_xbindkey_wrapper (SCM key)
       printf("remove_key didn't return 0!!!\n");
       return SCM_BOOL_F;
     }
- 
-  
+
+
   return SCM_UNSPECIFIED;
 }
 
@@ -1073,7 +1073,7 @@ SCM remove_xbindkey_wrapper (SCM key)
 SCM run_command_wrapper (SCM command)
 {
   char *cmdstr;
-  
+
   cmdstr = malloc(sizeof(char) * SCM_LENGTH(command) + 1);
   strncpy(cmdstr, SCM_CHARS(command), SCM_LENGTH(command));
   cmdstr[SCM_LENGTH(command)] = '\0';
@@ -1088,7 +1088,7 @@ SCM run_command_wrapper (SCM command)
 SCM grab_all_keys_wrapper (void)
 {
   grab_keys (current_display);
-  
+
   return SCM_UNSPECIFIED;
 }
 
@@ -1096,14 +1096,14 @@ SCM grab_all_keys_wrapper (void)
 SCM ungrab_all_keys_wrapper (void)
 {
   ungrab_all_keys (current_display);
-  
+
   return SCM_UNSPECIFIED;
 }
 
 SCM remove_all_keys_wrapper (void)
 {
   close_keys ();
-  
+
   return SCM_UNSPECIFIED;
 }
 
@@ -1112,7 +1112,7 @@ SCM debug_info_wrapper (void)
 {
   printf ("\nKeys = %p\n", keys);
   printf ("nb_keys = %d\n", nb_keys);
-  
+
   return SCM_UNSPECIFIED;
 }
 
