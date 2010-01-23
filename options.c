@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "config.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -24,10 +25,10 @@
 #include "xbindkeys.h"
 #include "keys.h"
 #include "grab_key.h"
+
 #ifdef GUILE_FLAG
 #include <libguile.h>
 #endif
-#include "config.h"
 
 char *display_name = NULL;
 
@@ -1017,6 +1018,8 @@ SCM xbindkey_wrapper(SCM key, SCM cmd)
 }
 
 
+SCM tab_scm[2];
+
 SCM xbindkey_function_wrapper (SCM key, SCM fun)
 {
   KeyType_t type = SYM;
@@ -1032,12 +1035,20 @@ SCM xbindkey_function_wrapper (SCM key, SCM fun)
       return SCM_BOOL_F;
     }
 
+  tab_scm[0] = fun;
+
   if (add_key (type, event_type, keysym, keycode,
-	       button, modifier, NULL, fun) != 0)
+	       button, modifier, NULL, tab_scm[0]) != 0)
     {
       printf("add_key didn't return 0!!!\n");
       return SCM_BOOL_F;
     }
+  else {
+    printf ("add_key ok!!!  fun=%d\n", gh_procedure_p (fun));
+  }
+
+  //scm_permanent_object (tab_scm[0]);
+  scm_remember_upto_here_1 (tab_scm[0]);
 
   return SCM_UNSPECIFIED;
 }

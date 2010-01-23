@@ -276,10 +276,17 @@ set_keysym (Keys_t * key, EventType_t event_type, KeySym keysym,
     }
 
   key->function = function;
+
+  //  printf("******************* ICICICICICI *********************\n");
+  //#ifdef GUILE_FLAG
+  //  printf("  name=%d\n", SCM_IMP (key->function));
+  //#endif
+
+  //  scm_permanent_object (key->function);
 }
 
 void
-set_keycode (Keys_t * key, EventType_t event_type, KeyCode keycode, 
+set_keycode (Keys_t * key, EventType_t event_type, KeyCode keycode,
 	     unsigned int modifier, char *command, SCM function)
 {
   key->type = CODE;
@@ -290,7 +297,7 @@ set_keycode (Keys_t * key, EventType_t event_type, KeyCode keycode,
   if (command != NULL)
     {
       key->command = (char *) malloc ((strlen (command) + 1) * sizeof (char));
-      
+
       if (key->command != NULL)
 	strncpy (key->command, command, strlen (command) + 1);
     }
@@ -298,24 +305,24 @@ set_keycode (Keys_t * key, EventType_t event_type, KeyCode keycode,
     {
       key->command = NULL;
     }
-  
+
   key->function = function;
 }
 
 
 void
-set_button (Keys_t * key, EventType_t event_type, unsigned int button, 
+set_button (Keys_t * key, EventType_t event_type, unsigned int button,
 	    unsigned int modifier, char *command, SCM function)
 {
   key->type = BUTTON;
   key->event_type = event_type;
   key->key.button = button;
   key->modifier = modifier;
-  
+
   if (command != NULL)
     {
       key->command = (char *) malloc ((strlen (command) + 1) * sizeof (char));
-      
+
       if (key->command != NULL)
 	strncpy (key->command, command, strlen (command) + 1);
     }
@@ -323,7 +330,7 @@ set_button (Keys_t * key, EventType_t event_type, unsigned int button,
     {
       key->command = NULL;
     }
-  
+
   key->function = function;
 }
 
@@ -358,7 +365,7 @@ remove_key (KeyType_t type, EventType_t event_type, KeySym keysym, KeyCode keyco
     {
       return (-1);
     }
-  
+
   modifier &= ~(numlock_mask | capslock_mask | scrolllock_mask);
 
   for (i = 0; i < nb_keys; i++)
@@ -376,7 +383,7 @@ remove_key (KeyType_t type, EventType_t event_type, KeySym keysym, KeyCode keyco
     {
       if (verbose)
 	printf ("Removing key index %d\n", found_index);
-  
+
       /* make new array keys_bis */
       keys_bis = (Keys_t *) malloc ((nb_keys - 1) * sizeof (Keys_t));
       if (keys_bis == NULL)
@@ -384,7 +391,7 @@ remove_key (KeyType_t type, EventType_t event_type, KeySym keysym, KeyCode keyco
 
       for (i = 0; i < found_index; i++)
 	keys_bis[i] = keys[i];
-      
+
       for (i = found_index + 1; i < nb_keys; i++)
 	keys_bis[i - 1] = keys[i];
 
@@ -410,11 +417,11 @@ void
 run_command (char *command)
 {
   pid_t pid;
-  
-#ifdef FORK_FLAG  
+
+#ifdef FORK_FLAG
   if (verbose)
     printf ("Start program with fork+exec call\n");
-  
+
   //  if (fork() == 0)
   //  execlp ("sh", "sh", "-c", key->command, NULL);
   if (!(pid = fork()))
@@ -433,7 +440,7 @@ run_command (char *command)
 #else
   if (verbose)
     printf ("Start program with system call\n");
-  
+
   system (command);
 #endif
 }

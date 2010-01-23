@@ -1,3 +1,8 @@
+2010-01-23  Philippe Brochard  <hocwp@free.fr>
+
+	* xbindkeys.c (event_loop): Stat both default rc file and guile rc
+	file for reloading them when they change.
+
 xbindkeys changelog by Philippe Brochard <hocwp@free.fr>
 
 

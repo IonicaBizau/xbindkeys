@@ -51,9 +51,8 @@ static void start_as_daemon (void);
 
 Display *current_display;  // The current display
 
-#ifndef GUILE_FLAG
 extern char rc_file[512];
-#else
+#ifdef GUILE_FLAG
 extern char rc_guile_file[512];
 #endif
 
@@ -232,54 +231,52 @@ event_loop (Display * d)
   XEvent e;
   int i;
   struct stat rc_file_info;
-#ifndef GUILE_FLAG
   time_t rc_file_changed;
-#else
+#ifdef GUILE_FLAG
   time_t rc_guile_file_changed;
+  struct stat rc_guile_file_info;
 #endif
-
 
 
   XSetErrorHandler ((XErrorHandler) null_X_error);
 
-#ifndef GUILE_FLAG
   stat(rc_file, &rc_file_info);
   rc_file_changed = rc_file_info.st_mtime;
-#else
-  stat (rc_guile_file, &rc_file_info);
-  rc_guile_file_changed = rc_file_info.st_mtime;
+#ifdef GUILE_FLAG
+  stat (rc_guile_file, &rc_guile_file_info);
+  rc_guile_file_changed = rc_guile_file_info.st_mtime;
 #endif
+
 
 
   while (True)
     {
       while(!XPending(d))
 	{
-#ifndef GUILE_FLAG
+
 	  // if the rc file has been modified, reload it
 	  stat (rc_file, &rc_file_info);
-	  if (rc_file_info.st_mtime != rc_file_changed)
+#ifdef GUILE_FLAG
+	  // if the rc guile file has been modified, reload it
+	  stat (rc_guile_file, &rc_guile_file_info);
+#endif
+
+	  if (rc_file_info.st_mtime != rc_file_changed
+#ifdef GUILE_FLAG
+	      || rc_guile_file_info.st_mtime != rc_guile_file_changed
+#endif
+	      )
 	    {
 	      reload_rc_file ();
 	      if (verbose)
 		{
-		  printf ("The rc file has been modified, reload it\n");
+		  printf ("The configuration file has been modified, reload it\n");
 		}
 	      rc_file_changed = rc_file_info.st_mtime;
-	    }
-#else
-	  // if the rc guile file has been modified, reload it
-	  stat (rc_guile_file, &rc_file_info);
-	  if (rc_file_info.st_mtime != rc_guile_file_changed)
-	    {
-	      reload_rc_file ();
-	      if (verbose)
-		{
-		  printf ("The rc guile file has been modified, reload it\n");
-		}
-	      rc_guile_file_changed = rc_file_info.st_mtime;
-	    }
+#ifdef GUILE_FLAG
+	      rc_guile_file_changed = rc_guile_file_info.st_mtime;
 #endif
+	    }
 
 	  usleep(SLEEP_TIME*1000);
 	}
