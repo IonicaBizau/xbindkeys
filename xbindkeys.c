@@ -55,7 +55,7 @@ extern char rc_file[512];
 #ifdef GUILE_FLAG
 extern char rc_guile_file[512];
 #endif
-
+extern int poll_rc;
 
 #define SLEEP_TIME 100
 
@@ -247,13 +247,10 @@ event_loop (Display * d)
   rc_guile_file_changed = rc_guile_file_info.st_mtime;
 #endif
 
-
-
   while (True)
     {
-      while(!XPending(d))
+      while(poll_rc && !XPending(d))
 	{
-
 	  // if the rc file has been modified, reload it
 	  stat (rc_file, &rc_file_info);
 #ifdef GUILE_FLAG

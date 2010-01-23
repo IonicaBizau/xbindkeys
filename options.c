@@ -38,6 +38,7 @@ char rc_guile_file[512];
 #endif
 
 int verbose = 0;
+int poll_rc = 0;
 int have_to_show_binding = 0;
 int have_to_get_binding = 0;
 int have_to_start_as_daemon = 1;
@@ -107,6 +108,10 @@ get_options (int argc, char **argv)
 	  strncpy (rc_guile_file, argv[++i], sizeof (rc_guile_file) - 1);
 	}
 #endif
+      else if (strcmp (argv[i], "-p") == 0 || strcmp (argv[i], "--poll-rc") == 0)
+	{
+	  poll_rc = 1;
+	}
       else if (strcmp (argv[i], "-s") == 0 || strcmp (argv[i], "--show") == 0)
 	{
 	  have_to_show_binding = 1;
@@ -222,6 +227,7 @@ show_help (void)
 #ifdef GUILE_FLAG
   fprintf (stderr, " -fg, --file-guile        Use an alternative guile configuration file\n");
 #endif
+  fprintf (stderr, "  -p, --poll-rc           Poll the rc/guile configs for updates\n");
   fprintf (stderr, "  -h, --help              This help!\n");
   fprintf (stderr, "  -X, --display           Set X display to use\n");
   fprintf (stderr,

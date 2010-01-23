@@ -1,4 +1,9 @@
+
+
 2010-01-23  Philippe Brochard  <hocwp@free.fr>
+	* options.c: A poll-rc flag has been added to poll the rc/guile
+	configuration file for update. By default no poll is done on
+	configuration files. Many thanks to Alexander Clouter.
 
 	* xbindkeys.c (event_loop): Stat both default rc file and guile rc
 	file for reloading them when they change.
