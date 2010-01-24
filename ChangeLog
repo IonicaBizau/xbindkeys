@@ -1,4 +1,7 @@
+2010-01-24  Alexander Clouter <alex@digriz.org.uk>
 
+	* xbindkeys.c (event_loop): Doesn't stat on configuration file
+	change the first time if poll-rc is false.
 
 2010-01-23  Philippe Brochard  <hocwp@free.fr>
 	* options.c: A poll-rc flag has been added to poll the rc/guile
