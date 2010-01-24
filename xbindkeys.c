@@ -231,21 +231,24 @@ event_loop (Display * d)
   XEvent e;
   int i;
   struct stat rc_file_info;
-  time_t rc_file_changed;
+  time_t rc_file_changed = 0;
 #ifdef GUILE_FLAG
-  time_t rc_guile_file_changed;
+  time_t rc_guile_file_changed = 0;
   struct stat rc_guile_file_info;
 #endif
 
 
   XSetErrorHandler ((XErrorHandler) null_X_error);
 
-  stat(rc_file, &rc_file_info);
-  rc_file_changed = rc_file_info.st_mtime;
+  if (poll_rc)
+    {
+      stat(rc_file, &rc_file_info);
+      rc_file_changed = rc_file_info.st_mtime;
 #ifdef GUILE_FLAG
-  stat (rc_guile_file, &rc_guile_file_info);
-  rc_guile_file_changed = rc_guile_file_info.st_mtime;
+      stat (rc_guile_file, &rc_guile_file_info);
+      rc_guile_file_changed = rc_guile_file_info.st_mtime;
 #endif
+    }
 
   while (True)
     {
