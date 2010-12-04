@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(xbindkeys, 1.8.3, hocwp@free.fr)
+AC_INIT(xbindkeys, 1.8.4, hocwp@free.fr)
 AC_PREREQ(2.54)
 AC_COPYRIGHT(Copyright (C) Philippe Brochard <hocwp@free.fr>)
 
@@ -48,7 +48,7 @@ if test "$use_fork" = yes; then
    FORK_FLAG="-DFORK_FLAG=1"
 fi
 
-AC_SUBST([ FORK_FLAG ])
+AC_SUBST(FORK_FLAG)
 
 
 dnl disable xbindkeys_show install
@@ -77,7 +77,7 @@ fi
 
 AM_CONDITIONAL(GUILE, test x$use_guile = xyes)
 
-AC_SUBST([ GUILE_FLAG ])
+AC_SUBST(GUILE_FLAG)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_TYPE_PID_T
