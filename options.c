@@ -28,6 +28,7 @@
 
 #ifdef GUILE_FLAG
 #include <libguile.h>
+#include <guile/gh.h>
 #endif
 
 char *display_name = NULL;

@@ -416,9 +416,9 @@ remove_key (KeyType_t type, EventType_t event_type, KeySym keysym, KeyCode keyco
 void
 run_command (char *command)
 {
+#ifdef FORK_FLAG
   pid_t pid;
 
-#ifdef FORK_FLAG
   if (verbose)
     printf ("Start program with fork+exec call\n");
 
