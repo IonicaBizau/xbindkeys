@@ -1,3 +1,10 @@
+2010-12-04  Philippe Brochard  <pbrochard@common-lisp.net>
+
+	* options.c: Fix some compilations warnings.
+
+	* xbindkeys.c (adjust_display): adjust envstr_size to prevent a
+	segfault with libX11-1.4.0.
+
 2010-01-24  Alexander Clouter <alex@digriz.org.uk>
 
 	* xbindkeys.c (event_loop): Doesn't stat on configuration file
