@@ -201,7 +201,7 @@ static void
 adjust_display (XAnyEvent * xany)
 {
   size_t envstr_size = strlen(DisplayString(xany->display)) + 8 + 1;
-  char* envstr = malloc (envstr_size+2);
+  char* envstr = malloc ( envstr_size * sizeof (char) );
   XWindowAttributes attr;
   char* ptr;
   char buf[16];
