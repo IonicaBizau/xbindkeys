@@ -862,7 +862,7 @@ get_rc_guile_file (void)
   fclose (stream);
 
   init_xbk_guile_fns();
-  scm_primitive_load(scm_take0str(rc_guile_file));
+  scm_primitive_load(scm_makfrom0str(rc_guile_file));
   return 0;
 }
 
