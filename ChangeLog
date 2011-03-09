@@ -1,3 +1,7 @@
+2011-03-09  Hans-Peter Deifel <hpdeifel@gmx.de>
+
+	* options.c: Replace some deprecated guile functions.
+
 2011-02-21  Philippe Brochard  <pbrochard@common-lisp.net>
 
 	* options.c (get_rc_guile_file): Fix a crash related to guile's GC

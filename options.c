@@ -862,7 +862,7 @@ get_rc_guile_file (void)
   fclose (stream);
 
   init_xbk_guile_fns();
-  scm_primitive_load(scm_makfrom0str(rc_guile_file));
+  scm_primitive_load(scm_from_locale_string(rc_guile_file));
   return 0;
 }
 
@@ -893,14 +893,21 @@ SCM extract_key (SCM key, KeyType_t *type, EventType_t *event_type,
       key = SCM_CAR(key);  //go to that
       break; //and continue
     }
-    //Otherwise, this is a modifyer.
+    //Otherwise, this is a modifier.
 
     //So copy it:
     //Guile strings are not \0 terminated. hence we must copy.
-    len = SCM_LENGTH(SCM_CAR(key));
-    str = malloc(sizeof(char)*(len+1));
-    strncpy(str, SCM_CHARS(SCM_CAR(key)), len);
-    str[len] = '\0';
+    if (scm_is_true(scm_symbol_p(SCM_CAR(key)))) {
+      SCM newkey = scm_symbol_to_string(SCM_CAR(key));
+      str = scm_to_locale_string(newkey);
+    } else {
+      str = scm_to_locale_string(SCM_CAR(key));
+    }
+    len = strlen(str);
+
+
+    /*str = scm_to_locale_string(SCM_CAR(key));*/
+
 
     if(verbose) //extra verbosity here.
       printf("xbindkey_wrapper debug: modifier = %s.\n", str);
@@ -941,10 +948,14 @@ SCM extract_key (SCM key, KeyType_t *type, EventType_t *event_type,
 
   //So copy it:
   //Guile strings are not \0 terminated. hence we must copy.
-  len = SCM_LENGTH(key);
-  str = malloc(sizeof(char)*(len+1));
-  strncpy(str, SCM_CHARS(key), len);
-  str[len] = '\0';
+  if (scm_is_true(scm_symbol_p(key))) {
+    SCM newkey = scm_symbol_to_string(key);
+    str = scm_to_locale_string(newkey);
+  } else {
+    str = scm_to_locale_string(key);
+  }
+  len = strlen(str);
+
   if(verbose)
     printf("xbindkey_wrapper debug: key = %s\n", str);
 
@@ -1000,9 +1011,7 @@ SCM xbindkey_wrapper(SCM key, SCM cmd)
   char *cmdstr;
 
   //Guile strings are not \0 terminated. hence we must copy.
-  cmdstr = malloc(sizeof(char) * SCM_LENGTH(cmd) + 1);
-  strncpy(cmdstr, SCM_CHARS(cmd), SCM_LENGTH(cmd));
-  cmdstr[SCM_LENGTH(cmd)] = '\0';
+  cmdstr = scm_to_locale_string(cmd);
   if(verbose)
     printf("xbindkey_wrapper debug: cmd=%s.\n", cmdstr);
 
@@ -1092,9 +1101,7 @@ SCM run_command_wrapper (SCM command)
 {
   char *cmdstr;
 
-  cmdstr = malloc(sizeof(char) * SCM_LENGTH(command) + 1);
-  strncpy(cmdstr, SCM_CHARS(command), SCM_LENGTH(command));
-  cmdstr[SCM_LENGTH(command)] = '\0';
+  cmdstr = scm_to_locale_string(command);
 
   run_command (cmdstr);
 
