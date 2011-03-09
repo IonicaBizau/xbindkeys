@@ -28,7 +28,6 @@
 
 #ifdef GUILE_FLAG
 #include <libguile.h>
-#include <guile/gh.h>
 #endif
 
 char *display_name = NULL;
@@ -1060,7 +1059,7 @@ SCM xbindkey_function_wrapper (SCM key, SCM fun)
       return SCM_BOOL_F;
     }
   else {
-    printf ("add_key ok!!!  fun=%d\n", gh_procedure_p (fun));
+    printf ("add_key ok!!!  fun=%d\n", (scm_procedure_p (fun) == SCM_BOOL_T));
   }
 
   //scm_permanent_object (tab_scm[0]);
