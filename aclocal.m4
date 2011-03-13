@@ -20,6 +20,8 @@ If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically `autoreconf'.])])
 
 
+# serial 10
+
 
 
 
@@ -93,7 +95,10 @@ AC_DEFUN([GUILE_FLAGS],
 AC_DEFUN([GUILE_SITE_DIR],
  [AC_REQUIRE([GUILE_PROGS])dnl
   AC_MSG_CHECKING(for Guile site directory)
-  GUILE_SITE=`[$GUILE_CONFIG] info pkgdatadir`/site
+  GUILE_SITE=`[$GUILE_CONFIG] info sitedir`
+  if test "$GUILE_SITE" = ""; then
+     GUILE_SITE=`[$GUILE_CONFIG] info pkgdatadir`/site
+  fi
   AC_MSG_RESULT($GUILE_SITE)
   AC_SUBST(GUILE_SITE)
  ])
