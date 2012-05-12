@@ -42,6 +42,7 @@ int poll_rc = 0;
 int have_to_show_binding = 0;
 int have_to_get_binding = 0;
 int have_to_start_as_daemon = 1;
+int detectable_ar = 0;
 
 char *geom = NULL;
 
@@ -157,6 +158,11 @@ get_options (int argc, char **argv)
 	       || strcmp (argv[i], "--nodaemon") == 0)
 	{
 	  have_to_start_as_daemon = 0;
+	}
+      else if (strcmp (argv[i], "-sd") == 0
+	       || strcmp (argv[i], "--detectable-ar") == 0)
+	{
+	  detectable_ar = 1;
 	}
       else
 	{

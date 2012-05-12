@@ -36,6 +36,7 @@
 #include <libguile.h>
 #endif
 
+#include <X11/XKBlib.h>
 
 
 void end_it_all (Display * d);
@@ -90,6 +91,17 @@ inner_main (int argc, char **argv)
 
   d = start (display_name);
   current_display = d;
+
+  if (detectable_ar)
+    {
+      Bool supported_rtrn;
+      XkbSetDetectableAutoRepeat(d, True, &supported_rtrn);
+
+      if (!supported_rtrn)
+	{
+	  fprintf (stderr, "Could not set detectable autorepeat\n");
+	}
+    }
 
   get_offending_modifiers (d);
 
@@ -376,6 +388,11 @@ event_loop (Display * d)
 		  if (e.xbutton.button == keys[i].key.button
 		      && e.xbutton.state == keys[i].modifier)
 		    {
+                      //printf("Replay!!!\n");
+                      //ungrab_all_keys(d);
+                      //XPutBackEvent(d, &e);
+                      //sleep(1);
+                      //grab_keys(d);
 		      print_key (d, &keys[i]);
 		      adjust_display(&e.xany);
 		      start_command_key (&keys[i]);

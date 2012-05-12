@@ -36,6 +36,7 @@ extern int verbose;
 extern int have_to_show_binding;
 extern int have_to_get_binding;
 extern int have_to_start_as_daemon;
+extern int detectable_ar;
 
 extern char *geom;
 
