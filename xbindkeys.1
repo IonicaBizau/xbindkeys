@@ -6,7 +6,7 @@ xbindkeys \- a grabbing keys program for X
 \fBxbindkeys\fP [ \fIoptions\fP ]
 .br
 .SH "DESCRIPTION"
-\fIXbindKeys\fP is a program that grab keys and mouse button events 
+\fIXbindKeys\fP is a program that grab keys and mouse button events
 in X and starts associated shell command.
 
 .LP
@@ -55,9 +55,9 @@ Print a default guile configuration file
 Use an alternative guile configuration file
 
 .SH "XBINDKEYSRC"
-XBindKeys uses a configuration files. 
+XBindKeys uses a configuration files.
 This file is $HOME/.xbindkeysrc, used only for one user.
-All whitespace is ignored in the files except for within 
+All whitespace is ignored in the files except for within
 the commands names double quotes.
 .LP
 The configuration file consists of commands names in double quotes,
@@ -66,14 +66,14 @@ and associated keys in the next line.
 Comments are started with a pound (#) and extend to the end of the line.
 .LP
 You can see a default file with the --defaults option or create a default
-$HOME/.xbindkeysrc with 
+$HOME/.xbindkeysrc with
 .nf
  'xbindkeys --defaults > $HOME/.xbindkeysrc'.
 .LP
 .fi
 
 .SH "KEYSYMS"
-The program expects combinations of keysyms to be used by using plus(+) 
+The program expects combinations of keysyms to be used by using plus(+)
 characters to combine them together.
 .LP
 The format of a command line is:
@@ -84,7 +84,7 @@ The format of a command line is:
 .LP
 .fi
 To specify an associated key, you can use 'xbindkeys --key' or
- 'xbindkeys --multikey' and put one of the two lines in the 
+ 'xbindkeys --multikey' and put one of the two lines in the
 configuration file.
 .LP
 A list of keys is in /usr/include/X11/keysym.h and in
@@ -103,7 +103,7 @@ use it if you want to catch release events instead of press events.
 .LP
 By defaults, xbindkeys does not pay attention with the modifiers
 NumLock, CapsLock and ScrollLock.
-Add the lines above in the configuration file, if you want to pay 
+Add the lines above in the configuration file, if you want to pay
 attention to them.
 .LP
     keystate_numlock = enable
@@ -114,9 +114,9 @@ attention to them.
 
 .SH "EXAMPLES"
 .LP
-# control+shift+d starts an xterm (it's a comment)
+# control+shift+q starts an xterm (it's a comment)
 .nf
-"xterm" 
+"xterm"
 .nf
   control+shift + q
 .LP
@@ -170,7 +170,7 @@ send a HUP signal:
 .LP
 killall -HUP xbindkeys
 .LP
-When HUP signal is send to xbindkeys, changes in $HOME/.xbindkeysrc 
+When HUP signal is send to xbindkeys, changes in $HOME/.xbindkeysrc
 takes effect only after moving mouse.
 
 .SH "BUGS"
