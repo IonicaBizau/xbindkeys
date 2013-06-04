@@ -209,6 +209,7 @@ void
 print_key (Display * d, Keys_t * key)
 {
   char str[STR_KEY_LEN];
+  int keysyms_per_keycode_return;
 
   if (verbose)
     {
@@ -241,13 +242,8 @@ print_key (Display * d, Keys_t * key)
 		      str,
 		      str[0] ? " + " : "",
 		      key->event_type == PRESS ? "" : "Release + ",
-		      (XKeysymToString
-		       (XKeycodeToKeysym (d, key->key.code, 0)) !=
-		       NULL) ? XKeysymToString (XKeycodeToKeysym (d,
-								  key->key.
-								  code,
-								  0)) :
-		      "NoSymbol");
+		      (XKeysymToString (*XGetKeyboardMapping(d, key->key.code, 1, &keysyms_per_keycode_return)) != NULL) ?
+                      XKeysymToString (*XGetKeyboardMapping(d, key->key.code, 1, &keysyms_per_keycode_return)) : "NoSymbol");
 	    }
 	}
     }
