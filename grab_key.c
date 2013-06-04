@@ -190,7 +190,7 @@ void
 ungrab_all_keys (Display * dpy)
 {
   int screen;
-  
+
   for (screen = 0; screen < ScreenCount (dpy); screen++)
     {
       XUngrabKey (dpy, AnyKey, AnyModifier, RootWindow (dpy, screen));
@@ -216,7 +216,7 @@ grab_keys (Display * dpy)
     }
 
   ungrab_all_keys (dpy);
- 
+
 
   for (i = 0; i < nb_keys; i++)
     {
@@ -226,15 +226,35 @@ grab_keys (Display * dpy)
 	{
 	  for (screen = 0; screen < ScreenCount (dpy); screen++)
 	    {
-	      my_grab_key (dpy, XKeysymToKeycode (dpy, keys[i].key.sym),
-			   keys[i].modifier, RootWindow (dpy, screen));
+	      KeyCode code = XKeysymToKeycode (dpy, keys[i].key.sym);
+	      if (code != 0)
+	        {
+	          my_grab_key (dpy, code,
+			       keys[i].modifier, RootWindow (dpy, screen));
+	        }
+	      else
+	        {
+	          fprintf (stderr, "--- xbindkeys error ---\n");
+	          if (!verbose)
+		    {
+		      verbose = 1;
+		      print_key (dpy, &keys[i]);
+		      verbose = 0;
+		    }
+		  fprintf (stderr,
+                           "  The key symbol '%s' cannot be used, as it's not mapped\n"
+                           "  on your keyboard.\n"
+                           "  xbindkeys will keep running, but will ignore this symbol.\n",
+                           XKeysymToString (keys[i].key.sym));
+	        }
+
 	    }
 	}
       else if (keys[i].type == BUTTON)
 	{
 	  for (screen = 0; screen < ScreenCount (dpy); screen++)
 	    {
-	      my_grab_button (dpy, keys[i].key.button, keys[i].modifier, 
+	      my_grab_button (dpy, keys[i].key.button, keys[i].modifier,
 			      RootWindow (dpy, screen));
 	    }
 	}
@@ -244,7 +264,7 @@ grab_keys (Display * dpy)
 	    {
 	      for (screen = 0; screen < ScreenCount (dpy); screen++)
 		{
-		  my_grab_key (dpy, keys[i].key.code, keys[i].modifier, 
+		  my_grab_key (dpy, keys[i].key.code, keys[i].modifier,
 			       RootWindow (dpy, screen));
 		}
 	    }
