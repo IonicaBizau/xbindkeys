@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(xbindkeys, 1.8.5, hocwp@free.fr)
+AC_INIT(xbindkeys, 1.8.6, hocwp@free.fr)
 AC_PREREQ(2.54)
 AC_COPYRIGHT(Copyright (C) Philippe Brochard <hocwp@free.fr>)
 
