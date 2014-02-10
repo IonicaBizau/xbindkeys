@@ -377,7 +377,7 @@ event_loop (Display * d)
 	      printf ("e.xbutton.state=%d\n", e.xbutton.state);
 	    }
 
-	  e.xbutton.state &= ~(numlock_mask | capslock_mask | scrolllock_mask
+	  e.xbutton.state &= 0x1FFF & ~(numlock_mask | capslock_mask | scrolllock_mask
 			       | Button1Mask | Button2Mask | Button3Mask
 			       | Button4Mask | Button5Mask);
 
@@ -409,7 +409,7 @@ event_loop (Display * d)
 	      printf ("e.xbutton.state=%d\n", e.xbutton.state);
 	    }
 
-	  e.xbutton.state &= ~(numlock_mask | capslock_mask | scrolllock_mask
+	  e.xbutton.state &= 0x1FFF & ~(numlock_mask | capslock_mask | scrolllock_mask
 			       | Button1Mask | Button2Mask | Button3Mask
 			       | Button4Mask | Button5Mask);
 
